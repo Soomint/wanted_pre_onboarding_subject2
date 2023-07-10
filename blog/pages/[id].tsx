@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next/types";
+import { GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from "next/types";
 
 export interface BLOG {
     id: number;
@@ -14,7 +14,7 @@ export interface BLOG {
 const fs = require('fs');
 const fm = require('front-matter');
 
-const blog = (blog: BLOG) => {
+const blog = ({ blog, contentsHtml }: InferGetStaticPropsType<typeof getStaticProps>) => {
     return (
         <table>
             <tr>
@@ -30,7 +30,7 @@ const blog = (blog: BLOG) => {
                 <td>{blog.tags}</td>
             </tr>
             <tr>
-                <td colSpan={4} dangerouslySetInnerHTML={{ __html: blog.contents }}>
+                <td colSpan={4} dangerouslySetInnerHTML={{ __html: contentsHtml }}>
                 </td>
             </tr>
         </table>
@@ -40,16 +40,32 @@ const blog = (blog: BLOG) => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const { id } = params as any;
 
-    const data = fs.readFile(`../__posts/${id}.md`, 'utf8');
+    const data = await fs.readFileSync(process.cwd().concat(`/__posts/${id}.md`), 'utf-8');
 
-    const contents = fm(data);
+    const parseResult = fm(data);
+    const blog = parseResult.attributes;
+    const contentsHtml = parseResult.body;
 
     return {
         props: {
             blog,
-            contents,
+            contentsHtml,
         },
     };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const dir = process.cwd().concat('/__posts');
+
+    const files: string[] = await fs.readdirSync(dir);
+
+    const paths = files.map((fileName: string) => {
+        const fileNameNoExt = fileName.replace(/\.md$/, '');
+
+        return { params: { id: fileNameNoExt } }
+    });
+
+    return { paths, fallback: false };
 };
 
 export default blog;
