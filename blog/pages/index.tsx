@@ -63,10 +63,10 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const files: string[] = await fs.readdirSync(dir);
 
-  const blogList = files.map(async (fileName: string) => {
+  const blogList = files.map((fileName: string) => {
     const id = fileName.replace(/\.md$/, '');
 
-    const file = await fs.readFileSync(process.cwd().concat(`/__posts/${id}.md`), 'utf-8');
+    const file = fs.readFileSync(process.cwd().concat(`/__posts/${id}.md`), 'utf-8');
 
     const contents = fm(file).attributes;
 
