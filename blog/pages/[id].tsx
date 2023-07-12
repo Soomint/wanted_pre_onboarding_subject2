@@ -3,6 +3,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router'
+import { unified } from "unified";
+import markdown from "remark-parse";
+import remark2rehype from "remark-rehype";
+import html from "rehype-stringify";
 
 export interface BLOG {
     id: number;
@@ -73,7 +77,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const parseResult = fm(data);
     const blog = parseResult.attributes;
-    const contentsHtml = parseResult.body;
+    const contentsHtml = unified()
+        .use(markdown)
+        .use(remark2rehype)
+        .use(html)
+        .processSync(parseResult.body.toString()).value;
 
     return {
         props: {
