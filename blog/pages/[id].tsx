@@ -29,21 +29,21 @@ const Blog: NextPage = ({ blog, contentsHtml }: InferGetStaticPropsType<typeof g
             </Head>
 
             <main className={styles.main}>
-                <h1 onClick={() => router.push('/')} style={{ cursor: 'pointer' }}>블로그 리스트</h1>
+                <h1 onClick={() => router.push('/')} style={{ cursor: 'pointer', marginBottom: '100px' }}>리스트로 이동</h1>
                 <table>
-                    <tr>
+                    <tr style={{ padding: '5px' }}>
                         <th>카테고리</th>
                         <th>제목</th>
                         <th>작성일자</th>
                         <th>태그</th>
                     </tr>
-                    <tr>
+                    <tr style={{ padding: '5px' }}>
                         <td>{blog.categories.map((category: string, idx: number) => category.concat((idx + 1) === blog.categories.length ? '' : ', '))}</td>
                         <td>{blog.title}</td>
                         <td>{blog.date}</td>
                         <td>{blog.tags.map((tag: string, idx: number) => '#'.concat(tag).concat((idx + 1) === blog.tags.length ? '' : ' '))}</td>
                     </tr>
-                    <tr>
+                    <tr style={{ padding: '5px' }}>
                         <td colSpan={4} dangerouslySetInnerHTML={{ __html: contentsHtml }}>
                         </td>
                     </tr>

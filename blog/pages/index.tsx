@@ -19,9 +19,9 @@ const Home: NextPage = ({ blogList }: InferGetStaticPropsType<typeof getStaticPr
       </Head>
 
       <main className={styles.main}>
-        <h1>블로그 리스트</h1>
+        <h1 style={{ marginBottom: '100px' }}>블로그 리스트</h1>
         <table>
-          <tr>
+          <tr style={{ padding: '5px' }}>
             <th>카테고리</th>
             <th>제목</th>
             <th>작성일자</th>
@@ -30,7 +30,7 @@ const Home: NextPage = ({ blogList }: InferGetStaticPropsType<typeof getStaticPr
           </tr>
           {
             blogList.map((blog: BLOG) => (
-              <tr key={blog.id} onClick={() => router.push(`/${blog.id}`)}>
+              <tr key={blog.id} onClick={() => router.push(`/${blog.id}`)} style={{ padding: '5px' }}>
                 <td>{blog.categories.map((category, idx) => category.concat((idx + 1) === blog.categories.length ? '' : ', '))}</td>
                 <td>{blog.title}</td>
                 <td>{blog.date}</td>
