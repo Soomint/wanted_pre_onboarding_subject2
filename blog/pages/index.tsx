@@ -59,18 +59,16 @@ const Home: NextPage = ({ blogList }: InferGetStaticPropsType<typeof getStaticPr
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const dir = process.cwd().concat('/__posts');
+  const dir = process.cwd().concat('/__posts'); // 마크다운 블로그 데이터가 존재하는 디렉토리 참조
 
-  const files: string[] = await fs.readdirSync(dir);
+  const files: string[] = await fs.readdirSync(dir); // files객체에 마크다운 블로그 데이터 세팅
 
   const blogList = files.map((fileName: string) => {
-    const id = fileName.replace(/\.md$/, '');
+    const id = fileName.replace(/\.md$/, ''); // 파일이름명 세팅
 
-    const file = fs.readFileSync(process.cwd().concat(`/__posts/${id}.md`), 'utf-8');
+    const file = fs.readFileSync(process.cwd().concat(`/__posts/${id}.md`), 'utf-8'); // 해당파일 파일객체 선언
 
-    const contents = fm(file).attributes;
-
-    console.log(contents)
+    const contents = fm(file).attributes; // front-matter 라이브러리로 마크다운 메타데이터 파싱
 
     return {
       id,

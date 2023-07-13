@@ -92,14 +92,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const dir = process.cwd().concat('/__posts');
+    const dir = process.cwd().concat('/__posts'); // 마크다운 블로그 데이터가 존재하는 디렉토리 참조
 
-    const files: string[] = await fs.readdirSync(dir);
+    const files: string[] = await fs.readdirSync(dir); // files객체에 마크다운 블로그 데이터 세팅
 
     const paths = files.map((fileName: string) => {
-        const fileNameNoExt = fileName.replace(/\.md$/, '');
+        const fileNameNoExt = fileName.replace(/\.md$/, ''); // 파일이름명 세팅
 
-        return { params: { id: fileNameNoExt } }
+        return { params: { id: fileNameNoExt } } // params 세팅
     });
 
     return { paths, fallback: false };
